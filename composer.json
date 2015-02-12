@@ -1,0 +1,31 @@
+{
+    "name": "piotrpasich/code-quality-threshold",
+    "require-dev": {
+        "symfony/process": "~2.2",
+        "symfony/yaml": "~2.2",
+        "composer/composer": "dev-master",
+        "phpmd/phpmd": "@stable"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Piotr Pasich",
+            "email": "piotr.pasich@x-team.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "extra": {
+        "cqt-parameters": {
+            "file": "app/config/parameters.yml"
+        }
+    },
+    "scripts": {
+        "test": [
+            "piotrpasich\\CodeQualityThreshold\\Composer\\ScriptHandler::checkThresholds"
+        ]
+    },
+    "autoload": {
+        "psr-0": { "piotrpasich\\CodeQualityThreshold": "" }
+    }
+}

@@ -1,0 +1,4 @@
+tools:
+    phpmd:
+        class: piotrpasich\CodeQualityThreshold\Tool\Phpmd
+        options:
