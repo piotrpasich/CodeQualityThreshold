@@ -25,6 +25,7 @@
             "piotrpasich\\CodeQualityThreshold\\Composer\\ScriptHandler::checkThresholds"
         ]
     },
+    "target-dir": "piotrpasich/CodeQualityThreshold",
     "autoload": {
         "psr-0": { "piotrpasich\\CodeQualityThreshold": "" }
     }
