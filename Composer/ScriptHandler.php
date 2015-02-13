@@ -25,7 +25,7 @@ class ScriptHandler
         $options = static::loadConfiguration($event);
         $tools = static::getTools($options);
 
-        foreach ($tools as $toolConfiguration) {
+        foreach ($tools as $toolName => $toolConfiguration) {
             /** @var \piotrpasich\CodeQualityThreshold\Tool\Tool $tool */
             $tool = new $toolConfiguration['class']($toolConfiguration);
 
@@ -36,16 +36,16 @@ class ScriptHandler
             $process = static::runCommand($event, $tool, $tool->composeCommand());
 
             if (!$process->isSuccessful()) {
-                throw new \RuntimeException(sprintf("%s: %s", $process->getErrorOutput(), $process->getOutput()));
+                throw new \RuntimeException(sprintf("[%s] %s: %s", $toolName, $process->getErrorOutput(), $process->getOutput()));
             }
 
             if ((int)$process->getOutput() > $tool->getThreshold()) {
                 static::runCommand($event, $tool, $tool->composeReportCommand());
 
-                throw new \RuntimeException(sprintf("%s: %s", $tool->getErrorMessage(), $process->getOutput()));
+                throw new \RuntimeException(sprintf("[%s] %s: %s", $toolName, $tool->getErrorMessage(), $process->getOutput()));
             }
 
-            $event->getIO()->write("<info>{$tool->getSuccessMessage()}</info>");
+            $event->getIO()->write("<info>[{$toolName}] {$tool->getSuccessMessage()}</info>");
         }
     }
 

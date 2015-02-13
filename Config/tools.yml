@@ -7,5 +7,5 @@ phpcs:
 phpcpd:
     class: piotrpasich\CodeQualityThreshold\Tool\Phpcpd
 
-Phpdcd:
+phpdcd:
     class: piotrpasich\CodeQualityThreshold\Tool\Phpdcd
