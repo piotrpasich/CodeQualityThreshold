@@ -15,6 +15,7 @@ class Phpcs extends Tool
         'rules'     => 'Config/Phpmd/ruleset.xml',
         'threshold' => 0,
         'timeout'   => 1200
+    ];
     
     public function composeCommand()
     {

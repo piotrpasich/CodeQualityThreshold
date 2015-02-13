@@ -9,7 +9,7 @@ class FileLocator
 
     public function locateFile($filePath)
     {
-        $fileLocator = new SymfonyFileLocator(['', __DIR__ . '/..']);
+        $fileLocator = new SymfonyFileLocator(['.', __DIR__ . '/..']);
 
         return $fileLocator->locate($filePath);
     }
