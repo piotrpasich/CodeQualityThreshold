@@ -8,11 +8,11 @@
         }
     ],
     "require": {
-        "symfony/process": "=>2.2",
-        "symfony/yaml": "=>2.2",
+        "symfony/process": ">=2.2",
+        "symfony/yaml": ">=2.2",
         "composer/composer": "@stable",
-        "symfony/options-resolver": "=>2.6",
-        "phpmd/phpmd": "=>stable",
+        "symfony/options-resolver": ">=2.6",
+        "phpmd/phpmd": "@stable",
         "squizlabs/php_codesniffer": "2.*",
         "sebastian/phpcpd": "*",
         "sebastian/phpdcd": "*"
