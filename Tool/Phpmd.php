@@ -12,7 +12,7 @@ class Phpmd extends Tool
     protected  $defaultOptions = [
         'directory' => 'app',
         'rules'     => 'cleancode,codesize,unusedcode',
-        'command'   => 'vendor/phpmd/phpmd/src/bin/phpmd',
+        'command'   => 'php vendor/phpmd/phpmd/src/bin/phpmd',
         'threshold' => 0,
         'timeout'   => 1200
     ];

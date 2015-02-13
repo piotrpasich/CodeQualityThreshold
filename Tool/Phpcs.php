@@ -11,7 +11,7 @@ class Phpcs extends Tool
 
     protected  $defaultOptions = [
         'directory' => 'app',
-        'command'   => 'vendor/squizlabs/php_codesniffer/scripts/phpcs --report=csv',
+        'command'   => 'php vendor/squizlabs/php_codesniffer/scripts/phpcs --report=csv',
         'rules'     => 'Config/Phpcs/ruleset.xml',
         'threshold' => 0,
         'timeout'   => 1200

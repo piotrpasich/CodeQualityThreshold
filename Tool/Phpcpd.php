@@ -10,7 +10,7 @@ class Phpcpd extends Tool
 
     protected  $defaultOptions = [
         'directory' => 'app',
-        'command'   => 'vendor/sebastian/phpcpd/composer/bin/phpcpd',
+        'command'   => 'php vendor/sebastian/phpcpd/composer/bin/phpcpd',
         'threshold' => 0,
         'timeout'   => 1200
     ];

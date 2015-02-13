@@ -10,7 +10,7 @@ class Phpdcd extends Tool
 
     protected  $defaultOptions = [
         'directory' => 'app',
-        'command'   => 'vendor/sebastian/phpdcd/phpdcd',
+        'command'   => 'php vendor/sebastian/phpdcd/phpdcd',
         'threshold' => 0,
         'timeout'   => 1200
     ];
