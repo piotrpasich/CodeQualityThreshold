@@ -8,9 +8,9 @@
         }
     ],
     "require": {
-        "symfony/process": "~2.*",
-        "symfony/yaml": "~2.*",
-        "symfony/options-resolver": "~2.*",
+        "symfony/process": "2.*",
+        "symfony/yaml": "2.*",
+        "symfony/options-resolver": "2.*",
         "phpmd/phpmd": "@stable",
         "squizlabs/php_codesniffer": "2.*",
         "sebastian/phpcpd": "*",
