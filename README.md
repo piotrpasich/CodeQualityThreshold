@@ -5,7 +5,7 @@ This extension is purposed to run every necessary tool to check the code against
 
 ## Installation
 
-   composer require piotrpasich/code-quality-threshold --dev
+    composer require piotrpasich/code-quality-threshold:dev-master --dev
    
 ## Configuration
 
