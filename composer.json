@@ -10,7 +10,7 @@
     "require": {
         "symfony/process": "~2.2",
         "symfony/yaml": "~2.2",
-        "composer/composer": "dev-master",
+        "composer/composer": "1.0.0-alpha9",
         "symfony/options-resolver": "~2.6",
         "phpmd/phpmd": "@stable",
         "squizlabs/php_codesniffer": "2.*",
