@@ -1,4 +1,7 @@
-tools:
-    phpmd:
-        class: piotrpasich\CodeQualityThreshold\Tool\Phpmd
-        options:
+phpmd:
+    class: piotrpasich\CodeQualityThreshold\Tool\Phpmd
+    options:
+        threshold: 42
+        directory: app
+        rules: cleancode,codesize,unusedcode
+        command: vendor/phpmd/phpmd/src/bin/phpmd
