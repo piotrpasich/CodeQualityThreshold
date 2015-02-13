@@ -7,8 +7,7 @@
             "email": "piotr.pasich@x-team.com"
         }
     ],
-    "require": {},
-    "require-dev": {
+    "require": {
         "symfony/process": "~2.2",
         "symfony/yaml": "~2.2",
         "composer/composer": "dev-master",
