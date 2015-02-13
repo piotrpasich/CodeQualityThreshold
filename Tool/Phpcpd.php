@@ -2,34 +2,27 @@
 
 namespace piotrpasich\CodeQualityThreshold\Tool;
 
-use piotrpasich\CodeQualityThreshold\File\FileLocator;
 use piotrpasich\CodeQualityThreshold\Tool\Tool;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class Phpmd extends Tool
+class Phpcpd extends Tool
 {
 
     protected  $defaultOptions = [
         'directory' => 'app',
-        'rules'     => 'cleancode,codesize,unusedcode',
-        'command'   => 'vendor/phpmd/phpmd/src/bin/phpmd',
+        'command'   => 'vendor/sebastian/phpcpd/composer/bin/phpcpd',
         'threshold' => 0,
         'timeout'   => 1200
     ];
 
     public function composeCommand()
     {
-        return "{$this->composeReportCommand()} | wc -l";
+        return "{$this->composeReportCommand()} | egrep 'Found [0-9]+ exact clones' -o  | egrep [0-9]+ -o || echo 0";
     }
 
     public function composeReportCommand()
     {
-        $rules = $this->configuration['rules'];
-        if ('xml' == pathinfo($rules, PATHINFO_EXTENSION)) {
-            $rules = (new FileLocator())->locateFile($rules);
-        }
-
-        return "{$this->configuration['command']} {$this->configuration['directory']} text {$rules}";
+        return "{$this->configuration['command']} {$this->configuration['directory']}";
     }
 
     public function getThreshold()
@@ -39,11 +32,11 @@ class Phpmd extends Tool
 
     public function getErrorMessage()
     {
-        return 'The PHP MD threshold is exceeded';
+        return 'The PHP Copy Paste Detector threshold is exceeded';
     }
 
     public function getSuccessMessage()
     {
-        return 'The PHP MD threshold passed';
+        return 'The PHP Copy Paste Detector threshold passed';
     }
 }

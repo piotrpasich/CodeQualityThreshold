@@ -16,9 +16,7 @@ abstract class Tool
 
     public function __construct(array $configuration = [])
     {
-        if (isset($configuration['options'])) {
-            $this->configuration = $this->resolveConfigurationOptions($configuration['options']);
-        }
+        $this->configuration = $this->resolveConfigurationOptions(isset($configuration['options']) ? $configuration['options'] : []);
     }
 
     /**
@@ -27,6 +25,13 @@ abstract class Tool
      * @return string
      */
     abstract public function composeCommand();
+
+    /**
+     * Creates a command to return full report
+     *
+     * @return string
+     */
+    abstract public function composeReportCommand();
 
     /**
      * Returns an integer with the threshold
@@ -49,6 +54,11 @@ abstract class Tool
      */
     abstract public function getSuccessMessage();
 
+    /**
+     * Return timeout for the command
+     *
+     * @return int
+     */
     public function getTimeout()
     {
         return $this->configuration['timeout'];
@@ -68,5 +78,4 @@ abstract class Tool
 
         return $optionsResolver->resolve($configurationOptions);
     }
-
 }

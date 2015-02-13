@@ -1,12 +1,5 @@
 {
     "name": "piotrpasich/code-quality-threshold",
-    "require-dev": {
-        "symfony/process": "~2.2",
-        "symfony/yaml": "~2.2",
-        "composer/composer": "dev-master",
-        "symfony/options-resolver": "~2.6",
-        "phpmd/phpmd": "@stable"
-    },
     "license": "MIT",
     "authors": [
         {
@@ -14,8 +7,18 @@
             "email": "piotr.pasich@x-team.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {},
+    "require-dev": {
+        "symfony/process": "~2.2",
+        "symfony/yaml": "~2.2",
+        "composer/composer": "dev-master",
+        "symfony/options-resolver": "~2.6",
+        "phpmd/phpmd": "@stable",
+        "squizlabs/php_codesniffer": "2.*",
+        "sebastian/phpcpd": "*",
+        "sebastian/phpdcd": "*"
+    },
+    "minimum-stability": "dev",
     "extra": {
         "cqt-parameters": {
             "file": "appa/config/parameters.yml"

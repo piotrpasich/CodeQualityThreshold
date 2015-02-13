@@ -6,30 +6,27 @@ use piotrpasich\CodeQualityThreshold\File\FileLocator;
 use piotrpasich\CodeQualityThreshold\Tool\Tool;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class Phpmd extends Tool
+class Phpcs extends Tool
 {
 
     protected  $defaultOptions = [
         'directory' => 'app',
-        'rules'     => 'cleancode,codesize,unusedcode',
-        'command'   => 'vendor/phpmd/phpmd/src/bin/phpmd',
+        'command'   => 'vendor/squizlabs/php_codesniffer/scripts/phpcs --report=csv',
+        'rules'     => 'Config/Phpmd/ruleset.xml',
         'threshold' => 0,
         'timeout'   => 1200
-    ];
-
+    
     public function composeCommand()
     {
-        return "{$this->composeReportCommand()} | wc -l";
+
+        return "{$this->composeReportCommand()} | tail -n +2 | wc -l";
     }
 
     public function composeReportCommand()
     {
-        $rules = $this->configuration['rules'];
-        if ('xml' == pathinfo($rules, PATHINFO_EXTENSION)) {
-            $rules = (new FileLocator())->locateFile($rules);
-        }
+        $rules = (new FileLocator())->locateFile($this->configuration['rules']);
 
-        return "{$this->configuration['command']} {$this->configuration['directory']} text {$rules}";
+        return "{$this->configuration['command']} {$this->configuration['directory']} --standard={$rules}";
     }
 
     public function getThreshold()
@@ -39,11 +36,11 @@ class Phpmd extends Tool
 
     public function getErrorMessage()
     {
-        return 'The PHP MD threshold is exceeded';
+        return 'The PHP Code Sniffer threshold is exceeded';
     }
 
     public function getSuccessMessage()
     {
-        return 'The PHP MD threshold passed';
+        return 'The PHP Code Sniffer threshold passed';
     }
 }

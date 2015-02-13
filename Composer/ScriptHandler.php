@@ -2,27 +2,16 @@
 
 namespace piotrpasich\CodeQualityThreshold\Composer;
 
+use piotrpasich\CodeQualityThreshold\File\FileLocator;
 use piotrpasich\CodeQualityThreshold\Tool\Tool;
-use Symfony\Component\ClassLoader\ClassCollectionLoader;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\PhpExecutableFinder;
 use Composer\Script\CommandEvent;
-use Composer\IO\IOInterface;
-use Symfony\Component\Yaml\Inline;
 use Symfony\Component\Yaml\Parser;
-use Symfony\Component\Yaml\Yaml;
 
 
 class ScriptHandler
 {
 
-    /**
-     * Default configuration. Can be overwritten by composer extra options;
-     */
     private static $defaultOptions = [
         'default-file' => 'Config/tools.yml',
         'file'         => []
@@ -33,9 +22,8 @@ class ScriptHandler
      */
     public static function checkThresholds(CommandEvent $event)
     {
-        $options = self::loadConfiguration($event);
-
-        $tools = self::getTools($options);
+        $options = static::loadConfiguration($event);
+        $tools = static::getTools($options);
 
         foreach ($tools as $toolConfiguration) {
             /** @var \piotrpasich\CodeQualityThreshold\Tool\Tool $tool */
@@ -45,50 +33,69 @@ class ScriptHandler
                 throw new \RuntimeException('The tool should implement Tool abstract class');
             }
 
-            $process = new Process($tool->composeCommand(), getcwd(), null, null, $tool->getTimeout());
-            $process->run(function ($type, $buffer) use ($event) { $event->getIO()->write($buffer, false); });
+            $process = static::runCommand($event, $tool, $tool->composeCommand());
 
             if (!$process->isSuccessful()) {
                 throw new \RuntimeException(sprintf("%s: %s", $process->getErrorOutput(), $process->getOutput()));
             }
 
             if ((int)$process->getOutput() > $tool->getThreshold()) {
+                static::runCommand($event, $tool, $tool->composeReportCommand());
+
                 throw new \RuntimeException(sprintf("%s: %s", $tool->getErrorMessage(), $process->getOutput()));
             }
 
-            $event->getIO()->write($tool->getSuccessMessage());
+            $event->getIO()->write("<info>{$tool->getSuccessMessage()}</info>");
         }
     }
 
-    public static function loadConfiguration(CommandEvent $event)
+    protected static function loadConfiguration(CommandEvent $event)
     {
         $composerConfiguration = $event->getComposer()->getPackage()->getExtra();
 
-        return self::getOptions(isset($composerConfiguration['cqt-parameters']) ? $composerConfiguration['cqt-parameters'] : []);
+        return static::getOptions(isset($composerConfiguration['cqt-parameters']) ? $composerConfiguration['cqt-parameters'] : []);
+    }
+
+    protected static function runCommand(CommandEvent $event, Tool $tool, $command)
+    {
+        if ($event->getIO()->isVerbose()) {
+            $event->getIO()->write($command);
+        }
+
+        $process = new Process($command, getcwd(), null, null, $tool->getTimeout());
+        $process->run(function ($type, $buffer) use ($event) {
+            if ($event->getIO()->isVerbose()) {
+                $event->getIO()->write($buffer, false);
+            }
+        });
+
+        return $process;
     }
 
     protected static function getOptions(array $options)
     {
-        return array_merge(self::$defaultOptions, $options);
+        return array_merge(static::$defaultOptions, $options);
     }
 
     protected static function getTools(array $options)
     {
-        $tools = self::loadFile($options['default-file'], __DIR__ . '/../');
+        $tools = static::loadFile($options['default-file']);
 
         if (isset($options['file']) && is_array($options['file'])) {
             foreach ($options['file'] as $file) {
-                $tools = array_merge($tools, self::loadFile($file));
+                $tools = array_merge($tools, static::loadFile($file));
             }
         } else if (isset($options['file']) && is_string($options['file'])) {
-            $tools = array_merge($tools, self::loadFile($options['file']));
+            $tools = array_merge($tools, static::loadFile($options['file']));
         }
 
         return $tools;
     }
 
-    protected static function loadFile($filePath, $startDir = '')
+    protected static function loadFile($filePath)
     {
-        return (new Parser())->parse(file_get_contents($startDir . $filePath));
+        $filePath = (new FileLocator())->locateFile($filePath);
+
+        return (new Parser())->parse(file_get_contents($filePath));
     }
 }
