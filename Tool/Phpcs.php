@@ -11,7 +11,7 @@ class Phpcs extends Tool
 
     protected  $defaultOptions = [
         'directory' => 'app',
-        'command'   => 'php vendor/squizlabs/php_codesniffer/scripts/phpcs --report=csv',
+        'command'   => 'php vendor/squizlabs/php_codesniffer/scripts/phpcs',
         'rules'     => 'Config/Phpcs/ruleset.xml',
         'threshold' => 0,
         'timeout'   => 1200
@@ -20,7 +20,7 @@ class Phpcs extends Tool
     public function composeCommand()
     {
 
-        return "{$this->composeReportCommand()} | tail -n +2 | wc -l";
+        return "{$this->composeReportCommand()} --report=csv | tail -n +2 | wc -l";
     }
 
     public function composeReportCommand()
